@@ -1,21 +1,19 @@
 @extends('adminlte::page')
 
 @section('content_header')
-<h1><b>Prestamos</b></h1>
+<h1><b>Pagos</b></h1>
 <hr>
 @stop
 
 @section('content')
 <div class="row">
 
-    <div class="col-md-12">
+    <div class="col-md-8">
         <div class="card card-outline card-primary">
             <div class="card-header">
-                <h3 class="card-title">Prestamos</h3>
+                <h3 class="card-title">Pagos</h3>
 
-                <div class="card-tools">
-                    <a href="{{ url('/admin/prestamos/create') }}" class="btn btn-primary"> Crear nuevo</a>
-                </div>
+
                 <!-- /.card-tools -->
             </div>
             <!-- /.card-header -->
@@ -26,13 +24,10 @@
 
                             <th style="text-align: center">Nro</th>
                             <th style="text-align: center">documento</th>
-                            <th style="text-align: center">Apellidos y nombres</th>
-                            <th style="text-align: center">Monto del prestamo</th>
-                            <th style="text-align: center">Tasa de interes</th>
-
-                            <th style="text-align: center">Modalidad</th>
+                            <th style="text-align: center">Cliente</th>
+                            <th style="text-align: center">Cuota pagada</th>
                             <th style="text-align: center">Nro de cuotas</th>
-                            <th style="text-align: center">fecha de inicio</th>
+                            <th style="text-align: center">fecha de pago</th>
                             <th style="text-align: center">Accion</th>
                         </tr>
 
@@ -41,41 +36,35 @@
                         @php
                         $contador = 1;
                         @endphp
-                        @foreach ($prestamos as $prestamo)
+                        @foreach ($pagos as $pago)
                         <tr>
                             <td style="text-align: center">{{ $contador++ }}</td>
-                            <td>{{ $prestamo->cliente->nro_documento }}</td>
-                            <td>{{ $prestamo->cliente->apellidos . ' ' . $prestamo->cliente->nombres }}</td>
-                            <td>{{ $prestamo->monto_prestado }}</td>
-                            <td>{{ $prestamo->tasa_interes }}</td>
-                            <td>{{ $prestamo->modalidad }}</td>
-                            <td>{{ $prestamo->nro_cuotas }}</td>
-                            <td>{{ $prestamo->fecha_inicio }}</td>
+                            <td>{{ $pago->prestamo->cliente->nro_documento }}</td>
+                            <td>{{ $pago->prestamo->cliente->apellidos . ' ' . $pago->prestamo->cliente->nombres }}</td>
+                            <td>{{ $pago->monto_pagado }}</td>
+                            <td>{{ $pago->referencia_pago }}</td>
+                            <td>{{ $pago->fecha_cancelado }}</td>
 
                             <td style="text-align: center">
                                 <div class="btn-group" prestamo="group" aria-label="Basic example">
-                                    <a href="{{ url('/admin/prestamos', $prestamo->id) }}"
-                                        style="border-radius: 4px" class="btn btn-info btn-sm"><i
-                                            class="fas fa-eye"></i></a>
-                                    <a href="{{ url('/admin/prestamos/contratos', $prestamo->id) }}"
+                                    
+                                    <a href="{{ url('/admin/pagos/contratos', $pago->id) }}"
                                         style="border-radius: 4px" class="btn btn-dark btn-sm"><i
                                             class="fas fa-print"></i></a>
-                                    @if ($prestamo->tiene_cuota_pagada)
-                                    @else
-                                    <a href="{{ url('/admin/prestamos/' . $prestamo->id . '/edit') }}"
+                                    <a href="{{ url('/admin/pagos/' . $pago->id . '/edit') }}"
                                         style="border-radius: 4px "
-                                        class="btn btn-block bg-gradient-warning btn-sm"><i
-                                            class="fas fa-pencil-alt"></i></a>
-                                    <form action="{{ url('/admin/prestamos', $prestamo->id) }}" method="post" id="form-delete-{{ $prestamo->id }}" style="display:inline;">
+                                        class="btn btn-block bg-gradient-warning btn-sm">anular</a>
+                                    <form action="{{ url('/admin/pagos', $pago->id) }}" method="post" id="form-delete-{{ $pago->id }}" style="display:inline;">
                                         @csrf
                                         @method('DELETE')
                                         <button type="button" class="btn btn-danger btn-sm"
-                                            data-id="{{ $prestamo->id }}"
+                                            data-id="{{ $pago->id }}"
                                             onclick="preguntar(this)">
+                                            
                                             <i class="fas fa-trash"></i>
                                         </button>
                                     </form>
-                                    @endif
+
 
 
                                 </div>
@@ -95,6 +84,45 @@
         </div>
         <!-- /.card -->
     </div>
+    <div class="card  card-outline card-primary">
+        <div class="card-header">
+            <h3 class="card-title">Buscar cliente</h3>
+
+
+            <!-- /.card-tools -->
+        </div>
+        <!-- /.card-header -->
+        <div class="card-body" style="display: block;">
+
+            <div class="row">
+                <div class="col-md-12">
+                    
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fas fa-id-card"></i></span>
+                        </div>
+                        <select name="cliente_id" id="" class="form-control select2">
+                            <option value="">Buscar cliente...</option>
+                            @foreach ($clientes as $cliente)
+                            <option value="{{ $cliente->id }}">
+                                {{ $cliente->nro_documento . ' - ' . $cliente->apellidos . ' ' . $cliente->nombres }}
+                            </option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+            </div>
+            @error('cliente_id')
+            <small style="color: red">{{ $message }}</small>
+            @enderror
+         
+
+
+
+            <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
+    </div>
 
 
 </div>
@@ -103,6 +131,11 @@
 
 @section('css')
 <style>
+
+    .select2-container .select2-selection--single {
+        height: 40px !important;
+        /* Ajusta la altura total del select */
+    }
     /* Fondo transparente y sin borde en el contenedor*/
     #example1_wrapper .dt-buttons {
         background-color: transparent;
@@ -157,6 +190,17 @@
 
 @section('js')
 <script>
+      $('.select2').select2();
+
+    $('.select2').on('change', function() {
+        var id = $(this).val();
+        //alert(cliente_id);
+        if (id) {
+            window.location.href = "{{url('/admin/pagos/prestamos/cliente/')}}" + "/" + id;
+
+        }
+    });
+    // Función de confirmación genérica
     function preguntar(boton) {
         const id = boton.getAttribute('data-id');
         Swal.fire({
@@ -180,10 +224,10 @@
             "pageLength": 5,
             "language": {
                 "emptyTable": "No hay informacion",
-                "info": "Mostrando _START_ a _END_ de _TOTAL_ prestamos",
-                "infoEmpty": "Mostrando 0 a 0 de 0 Prestamos",
-                "infoFiltered": "(Filtrado de _MAX_ total prestamos)",
-                "lengthMenu": "Mostrar _MENU_ prestamos",
+                "info": "Mostrando _START_ a _END_ de _TOTAL_ pagos",
+                "infoEmpty": "Mostrando 0 a 0 de 0 Pagos",
+                "infoFiltered": "(Filtrado de _MAX_ total pagos)",
+                "lengthMenu": "Mostrar _MENU_ pagos",
                 "loandingRecords": "Cargando...",
                 "processing": "Procesando...",
                 "search": "Buscador:",

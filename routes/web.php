@@ -80,14 +80,17 @@ Route::get('/admin/prestamos/contratos/{id}', [App\Http\Controllers\PrestamoCont
 
 //rutas para pagos
 
-Route::get('/admin/pagos', [App\Http\Controllers\PrestamoController::class, 'index'])->name('admin.pagos.index')->middleware('auth');
-Route::get('/admin/pagos/create', [App\Http\Controllers\PrestamoController::class, 'create'])->name('admin.pagos.create')->middleware('auth');
-Route::get('/admin/pagos/cliente/{id}', [App\Http\Controllers\PrestamoController::class, 'obtenerCliente'])->name('admin.pagos.cliente.obtenerCliente')->middleware('auth');
+Route::get('/admin/pagos', [App\Http\Controllers\PagoController::class, 'index'])->name('admin.pagos.index')->middleware('auth');
+Route::get('/admin/pagos/create', [App\Http\Controllers\PagoController::class, 'create'])->name('admin.pagos.create')->middleware('auth');
+Route::get('/admin/pagos/cliente/{id}', [App\Http\Controllers\PagoController::class, 'obtenerCliente'])->name('admin.pagos.cliente.obtenerCliente')->middleware('auth');
+Route::get('/admin/pagos/create/{id}', [App\Http\Controllers\PagoController::class, 'cargar_datos'])->name('admin.pagos.cargar_datos')->middleware('auth');
+Route::get('/admin/pagos/prestamos/cliente/{id}', [App\Http\Controllers\PagoController::class, 'cargar_prestamos_cliente'])->name('admin.pagos.cargar_prestamos_cliente')->middleware('auth');
+Route::get('/admin/pagos/prestamos/create/{id}', [App\Http\Controllers\PagoController::class, 'create'])->name('admin.pagos.create')->middleware('auth');
 
-Route::post('/admin/pagos/create', [App\Http\Controllers\PagoController::class, 'store'])->name('admin.pagos.store')->middleware('auth');
+Route::post('/admin/pagos/create/{id}', [App\Http\Controllers\PagoController::class, 'store'])->name('admin.pagos.store')->middleware('auth');
 Route::get('/admin/pagos/{id}', [App\Http\Controllers\PagoController::class, 'show'])->name('admin.pagos.show')->middleware('auth');
 Route::get('/admin/pagos/{id}/edit', [App\Http\Controllers\PagoController::class, 'edit'])->name('admin.pagos.edit')->middleware('auth');
 Route::put('/admin/pagos/{id}', [App\Http\Controllers\PagoController::class, 'update'])->name('admin.pagos.update')->middleware('auth');
 Route::delete('/admin/pagos/{id}', [App\Http\Controllers\PagoController::class, 'destroy'])->name('admin.pagos.destroy')->middleware('auth');
-Route::get('/admin/pagos/contratos/{id}', [App\Http\Controllers\PagoController::class, 'contratos'])->name('admin.pagos.contratos')->middleware('auth');
+Route::get('/admin/pagos/comprobante/{id}', [App\Http\Controllers\PagoController::class, 'comprobante'])->name('admin.pagos.comprobante')->middleware('auth');
 

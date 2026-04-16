@@ -10,28 +10,25 @@ return new class extends Migration
      * Run the migrations.
      */
     public function up(): void
-{
-    Schema::create('pagos', function (Blueprint $table) {
-        $table->id();
+    {
+        Schema::create('pagos', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('prestamo_id')->constrained('prestamos')->cascadeOnDelete();
+            $table->decimal('monto_pagado', 10, 2);
+            $table->date('fecha_pago');
 
-        $table->foreignId('prestamo_id')
-              ->constrained('prestamos')
-              ->cascadeOnDelete(); // 🔥 IMPORTANTE
+            // CAMBIA EL ENUM POR STRING AQUÍ:
+            $table->string('metodo_pago')->nullable();
 
-        $table->decimal('monto_pagado', 10, 2);
-        $table->date('fecha_pago');
-        $table->enum('metodo_pago', ['Efectivo', 'Transferencia', 'Tarjeta', 'Cheque']);//añadir transferencia bancaria y pago QR
-        $table->string('referencia_pago');
-        $table->enum('estado', ['Pendiente', 'Confirmado', 'Fallido', 'En mora']);
-        $table->date('fecha_cancelado')->nullable();
+            $table->string('referencia_pago')->nullable(); // Sugerencia: nullable si no siempre hay referencia
+            $table->enum('estado', ['Pendiente', 'Confirmado', 'Fallido', 'En mora']);
+            $table->date('fecha_cancelado')->nullable();
+            $table->timestamps();
+        });
+    }
 
-        $table->timestamps();
-    });
-}
-
-public function down(): void
-{
-    Schema::dropIfExists('pagos'); // 🔥 SIEMPRE PRIMERO
-}
-
+    public function down(): void
+    {
+        Schema::dropIfExists('pagos'); // 🔥 SIEMPRE PRIMERO
+    }
 };

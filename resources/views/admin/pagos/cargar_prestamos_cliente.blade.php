@@ -1,105 +1,62 @@
 @extends('adminlte::page')
 
 @section('content_header')
-<h1><b>Prestamos</b></h1>
-<hr>
+    <h1><b>Prestamos del cliente {{ $cliente->apellidos." ".$cliente->nombres }}</b></h1>
+    <hr>
 @stop
 
 @section('content')
 <div class="row">
-
     <div class="col-md-12">
-        <div class="card card-outline card-primary">
-            <div class="card-header">
-                <h3 class="card-title">Prestamos</h3>
-
-                <div class="card-tools">
-                    <a href="{{ url('/admin/prestamos/create') }}" class="btn btn-primary"> Crear nuevo</a>
-                </div>
-                <!-- /.card-tools -->
+        <div class="card card-outline card-primary"> <div class="card-header">
+                <h3 class="card-title">Historial de prestamos</h3>
             </div>
-            <!-- /.card-header -->
-            <div class="card-body" style="display: block;">
+            
+            <div class="card-body">
                 <table id="example1" class="table table-bordered table-hover table-striped table-sm">
                     <thead>
                         <tr>
-
                             <th style="text-align: center">Nro</th>
-                            <th style="text-align: center">documento</th>
-                            <th style="text-align: center">Apellidos y nombres</th>
-                            <th style="text-align: center">Monto del prestamo</th>
-                            <th style="text-align: center">Tasa de interes</th>
-
+                            <th style="text-align: center">Documento</th>
+                            <th style="text-align: center">Cliente</th>
+                            <th style="text-align: center">Monto prestado</th>
+                            <th style="text-align: center">Tasa de interés</th>
                             <th style="text-align: center">Modalidad</th>
                             <th style="text-align: center">Nro de cuotas</th>
-                            <th style="text-align: center">fecha de inicio</th>
-                            <th style="text-align: center">Accion</th>
+                            <th style="text-align: center">Fecha inicio</th>
+                            <th style="text-align: center">Estado</th>
+                            <th style="text-align: center">Acción</th>
                         </tr>
-
                     </thead>
                     <tbody>
-                        @php
-                        $contador = 1;
-                        @endphp
+                        @php $contador = 1; @endphp
                         @foreach ($prestamos as $prestamo)
                         <tr>
                             <td style="text-align: center">{{ $contador++ }}</td>
                             <td>{{ $prestamo->cliente->nro_documento }}</td>
                             <td>{{ $prestamo->cliente->apellidos . ' ' . $prestamo->cliente->nombres }}</td>
                             <td>{{ $prestamo->monto_prestado }}</td>
-                            <td>{{ $prestamo->tasa_interes }}</td>
+                            <td>{{ $prestamo->tasa_interes }}%</td>
                             <td>{{ $prestamo->modalidad }}</td>
                             <td>{{ $prestamo->nro_cuotas }}</td>
                             <td>{{ $prestamo->fecha_inicio }}</td>
-
+                            <td>
+                                <span class="badge {{ $prestamo->estado == 'pagado' ? 'badge-success' : 'badge-warning' }}">
+                                    {{ $prestamo->estado }}
+                                </span>
+                            </td>
                             <td style="text-align: center">
-                                <div class="btn-group" prestamo="group" aria-label="Basic example">
-                                    <a href="{{ url('/admin/prestamos', $prestamo->id) }}"
+                                <div class="btn-group" role="group">
+                                       <a href="{{ url('/admin/pagos/prestamos/create', $prestamo->id) }}"
                                         style="border-radius: 4px" class="btn btn-info btn-sm"><i
-                                            class="fas fa-eye"></i></a>
-                                    <a href="{{ url('/admin/prestamos/contratos', $prestamo->id) }}"
-                                        style="border-radius: 4px" class="btn btn-dark btn-sm"><i
-                                            class="fas fa-print"></i></a>
-                                    @if ($prestamo->tiene_cuota_pagada)
-                                    @else
-                                    <a href="{{ url('/admin/prestamos/' . $prestamo->id . '/edit') }}"
-                                        style="border-radius: 4px "
-                                        class="btn btn-block bg-gradient-warning btn-sm"><i
-                                            class="fas fa-pencil-alt"></i></a>
-                                    <form action="{{ url('/admin/prestamos', $prestamo->id) }}" method="post" id="form-delete-{{ $prestamo->id }}" style="display:inline;">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="button" class="btn btn-danger btn-sm"
-                                            data-id="{{ $prestamo->id }}"
-                                            onclick="preguntar(this)">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
-                                    </form>
-                                    @endif
-
-
-                                </div>
-
+                                            class="fas fa-money-bill-wane"></i>Ver pagos</a>
+                                    </div>
                             </td>
                         </tr>
                         @endforeach
                     </tbody>
-
                 </table>
-
-
-
-
-            </div>
-            <!-- /.card-body -->
-        </div>
-        <!-- /.card -->
-    </div>
-
-
-</div>
-
-@stop
+            </div> </div> </div> </div> @stop
 
 @section('css')
 <style>
@@ -157,6 +114,7 @@
 
 @section('js')
 <script>
+    // Función de confirmación genérica
     function preguntar(boton) {
         const id = boton.getAttribute('data-id');
         Swal.fire({
@@ -180,10 +138,10 @@
             "pageLength": 5,
             "language": {
                 "emptyTable": "No hay informacion",
-                "info": "Mostrando _START_ a _END_ de _TOTAL_ prestamos",
+                "info": "Mostrando _START_ a _END_ de _TOTAL_ Prestamos",
                 "infoEmpty": "Mostrando 0 a 0 de 0 Prestamos",
-                "infoFiltered": "(Filtrado de _MAX_ total prestamos)",
-                "lengthMenu": "Mostrar _MENU_ prestamos",
+                "infoFiltered": "(Filtrado de _MAX_ total Prestamos)",
+                "lengthMenu": "Mostrar _MENU_ Pretamos",
                 "loandingRecords": "Cargando...",
                 "processing": "Procesando...",
                 "search": "Buscador:",

@@ -299,14 +299,14 @@ return [
     */
 
     'menu' => [
-       [
+        [
             'text' => 'Configuracion',
             'url' => 'admin/configuraciones',
             'icon' => 'fas fa-fw fa-cogs',
             'classes' => 'bg-blue text-white',
-       ],
+        ],
 
-       [
+        [
             'text' => 'Roles',
             'icon' => 'fas fa-fw fa-user-check',
             'classes' => 'bg-blue text-white',
@@ -319,7 +319,7 @@ return [
                 ],
             ],
         ],
-         [
+        [
             'text' => 'Usuarios',
             'icon' => 'fas fa-fw fa-users',
             'classes' => 'bg-blue text-white',
@@ -358,7 +358,7 @@ return [
                 ],
             ],
         ],
-         [
+        [
             'text' => 'Pagos',
             'icon' => 'fas fa-fw fa-money-bill-wave',
             'classes' => 'bg-blue text-white',
@@ -371,7 +371,7 @@ return [
                 ],
             ],
         ],
-      
+
     ],
 
     /*
@@ -427,7 +427,7 @@ return [
                     'asset' => false,
                     'location' => '//cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css',
                 ],
-                 [
+                [
                     'type' => 'js',
                     'asset' => false,
                     'location' => '//cdn.datatables.net/buttons/2.4.0/js/dataTables.buttons.min.js',
@@ -480,12 +480,17 @@ return [
                 [
                     'type' => 'js',
                     'asset' => false,
-                    'location' => '//cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js',
+                    'location' => '//cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js',
                 ],
                 [
                     'type' => 'css',
                     'asset' => false,
-                    'location' => '//cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.css',
+                    'location' => '//cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css',
+                ],
+                [
+                    'type' => 'css',
+                    'asset' => false,
+                    'location' => '//cdn.jsdelivr.net/npm/@ttskch/select2-bootstrap4-theme@x.x.x/dist/select2-bootstrap4.min.css',
                 ],
             ],
         ],
@@ -507,7 +512,7 @@ return [
                     'asset' => true,
                     'location' => 'https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js',
                 ],
-                  [
+                [
                     'type' => 'css',
                     'asset' => true,
                     'location' => 'https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css',
